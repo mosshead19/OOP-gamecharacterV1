@@ -5,19 +5,23 @@ public class Program
     public static void Main()
     {
         Warrior warrior = new Warrior("Thor",1,100,15);
+        Mage mage = new Mage("Merlin", 1, 80, 50, 20);
 
         Console.WriteLine(warrior);
+        Console.WriteLine();
+        Console.WriteLine(mage);
         Console.WriteLine();
         Console.WriteLine($"Warrior {warrior.Name} attacks...");
+        Console.WriteLine($"Mage {mage.Name} cast a spell...");
         Console.WriteLine();
-        warrior.Attack();
+        warrior.Attack();mage.Attack();
         Console.WriteLine();
-        warrior.Defend();
+        warrior.Defend();mage.Defend();
         Console.WriteLine();
-        warrior.LevelUp();
+        warrior.LevelUp();mage.LevelUp();
         Console.WriteLine();
 
-        Console.WriteLine(warrior);
+        Console.WriteLine(warrior);Console.WriteLine(); Console.WriteLine(mage);
     }
 }
 
@@ -31,7 +35,7 @@ public abstract class GameCharacter
     public int Strength { get; set; }
     public int Intelligence { get; set; }
 
-    // Constructor
+   
     public GameCharacter(string name, int level, int health, int mana, int strength, int intelligence)
     {
         Name = name;
@@ -42,15 +46,15 @@ public abstract class GameCharacter
         Intelligence = intelligence;
     }
 
-    // Abstract methods
+    
     public abstract void Attack();
     public abstract void Defend();
     public abstract void LevelUp();
 
-    // ToString method to display character info
+   
     public override string ToString()
     {
-        return $"Warrior: {Name} (Level {Level})\t\n" +
+        return $"{Name} (Level {Level})\t\n" +
                $" Health: {Health}\n " +
                $"Mana: {Mana}\n " +
                $"Strength: {Strength}\n " +
@@ -62,11 +66,11 @@ public class Warrior : GameCharacter
 {
     public int Armor { get; set; }
 
-    // Constructor
+   
     public Warrior(string name, int level, int health, int strength)
-        : base(name, level, health, 0, strength, 0)  // No mana or intelligence for a Warrior
+        : base(name, level, health, 0, strength, 0)  
     {
-        Armor = 10;  // Default armor value
+        Armor = 10;  
     }
 
     public override void Attack()
@@ -112,13 +116,51 @@ public class Mage : GameCharacter
 {
     public int SpellPower { get; set; }
 
-    // Constructor
+
     public Mage(string name, int level, int health, int mana, int intelligence)
-        : base(name, level, health, mana, 0, intelligence)  // No strength for a Mage
+        : base(name, level, health, mana, 0, intelligence)  
     {
-        SpellPower = 10;  // Default spell power value
+        SpellPower = 10; 
     }
 
-    
-}
+   
+    public override void Attack()
+    {
+        
+        int CalculatemagicDamage = (Intelligence * 3) + SpellPower;
+        Random BurnRate = new Random();
+        bool isBurning = BurnRate.Next(100) < 25;
+
+        Console.WriteLine(isBurning ? "\tBurn Applied!\t" : "");
+        Console.WriteLine($"{Name} dealt {CalculatemagicDamage} damage.");
+    }
+
+
+    public override void Defend()
+    {
+        
+        int CalculateDamageReduction = Mana / 4;
+        Random EvadeRate = new Random();
+        bool isEvaded = EvadeRate.Next(100) < 20;
+
+        if (isEvaded) { Console.WriteLine($"Mage {Name} Evaded Succesfully"); }
+        else { Console.WriteLine($"Mage {Name} is hit... Successfully reduced damage by: {CalculateDamageReduction}"); }
+    }
+
+
+    public override void LevelUp()
+    {
+        Level++;
+        Intelligence += 5;
+        Mana += 15;
+        SpellPower += 3;
+
+        Console.WriteLine("\tLEVEL UP!\t\n");
+        Console.WriteLine($"Mage {Name} is now Level{Level}!\n");
+        Console.WriteLine("Stats Upgrades!\n" +
+                            $"Intelligence: {Intelligence}\n" +
+                            $"Mana: {Mana}\n" +
+                            $"Spell Power: {SpellPower}");
+    }
+    }
 
