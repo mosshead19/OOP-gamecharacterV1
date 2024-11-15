@@ -23,6 +23,7 @@ public class Program
 
 public abstract class GameCharacter
 {
+    //NEED ENCAPSULATION
 
     public string Name { get; set; }
     public int Level { get; set; }
@@ -60,6 +61,7 @@ public abstract class GameCharacter
 
 public class Warrior : GameCharacter
 {
+    //ENCAPSULATE ARMOR
     public int Armor { get; set; }
 
     // Constructor
